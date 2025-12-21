@@ -34,8 +34,6 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-web</artifactId>
 </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-security</artifactId>
@@ -45,99 +43,63 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-context</artifactId>
     </dependency>
-
-    <!-- Spring Web (Servlet, MockHttpServletRequest/Response) -->
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-web</artifactId>
     </dependency>
-
-    <!-- Spring Test (MockHttpServletRequest, MockHttpServletResponse) -->
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-test</artifactId>
         <scope>test</scope>
     </dependency>
-
-    <!-- Spring Security Core -->
     <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-core</artifactId>
     </dependency>
-
-    <!-- Spring Security Config (AuthenticationManager) -->
     <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-config</artifactId>
     </dependency>
-
-    <!-- JPA / Hibernate Annotations -->
     <dependency>
         <groupId>jakarta.persistence</groupId>
         <artifactId>jakarta.persistence-api</artifactId>
     </dependency>
-
-    <!-- Validation Annotations -->
     <dependency>
         <groupId>jakarta.validation</groupId>
         <artifactId>jakarta.validation-api</artifactId>
     </dependency>
-
-    <!-- Servlet API -->
     <dependency>
         <groupId>jakarta.servlet</groupId>
         <artifactId>jakarta.servlet-api</artifactId>
         <scope>provided</scope>
     </dependency>
-
-    <!-- Lombok -->
     <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <scope>provided</scope>
     </dependency>
-
-    <!-- TestNG -->
     <dependency>
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
         <version>7.9.0</version>
         <scope>test</scope>
     </dependency>
-
-    <!-- Mockito -->
     <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
         <scope>test</scope>
     </dependency>
-
-    <!-- Mockito Annotations -->
     <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-junit-jupiter</artifactId>
         <scope>test</scope>
     </dependency>
-
-    <!-- JWT (io.jsonwebtoken.*) -->
     <dependency>
         <groupId>io.jsonwebtoken</groupId>
         <artifactId>jjwt-api</artifactId>
         <version>0.11.5</version>
     </dependency>
 
-    <dependency>
-        <groupId>io.jsonwebtoken</groupId>
-        <artifactId>jjwt-impl</artifactId>
-        <version>0.11.5</version>
-        <scope>runtime</scope>
-    </dependency>
-
-    <dependency>
-        <groupId>io.jsonwebtoken</groupId>
-        <artifactId>jjwt-jackson</artifactId>
-        <version>0.11.5</version>
-        <scope>runtime</scope>
     </dependency>
     <dependency>
     <groupId>org.springframework.boot</groupId>
