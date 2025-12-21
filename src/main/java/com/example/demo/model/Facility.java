@@ -22,5 +22,7 @@ public class Facility{
     private String openTime;
 
     @Column(nullable=false)
-    private String close
+    private String closeTime;
+
+    
 }
