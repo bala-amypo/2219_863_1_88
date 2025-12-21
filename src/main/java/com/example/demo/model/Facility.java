@@ -7,4 +7,11 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "facility")
+@Table(name = "facilities")
+public class Facility{
+    @Id
+    @GeneratedValue(strategy="GenerationType.IDENTITY")
+    private Long id;
+
+    @Column(nullable=false)
+}
