@@ -14,4 +14,13 @@ public class Facility{
     private Long id;
 
     @Column(nullable=false)
+    private String name;
+
+    private String description;
+    
+    @Column(nullable=false)
+    private String openTime;
+
+    @Column(nullable=false)
+    private String close
 }
