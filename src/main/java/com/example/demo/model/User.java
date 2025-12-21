@@ -8,9 +8,24 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User{
+public class User {
+
     @Id
-    @GeneratedValue(strategy="GenerationType.IDENTITY")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String role = "RESIDENT";
+
+    @OneToOne(mappedBy = "owner")
+    private ApartmentUnit apartmentUnit;
 }
