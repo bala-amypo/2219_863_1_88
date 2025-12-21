@@ -10,7 +10,7 @@ import lombok.*;
 @Table(name = "facilities")
 public class Facility{
     @Id
-    @GeneratedValue(strategy="GenerationType.IDENTITY")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable=false)
@@ -22,7 +22,5 @@ public class Facility{
     private String openTime;
 
     @Column(nullable=false)
-    private String closeTime;
-
-    
+    private String closeTime;  
 }
