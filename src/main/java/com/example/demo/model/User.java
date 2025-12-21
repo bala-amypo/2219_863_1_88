@@ -25,5 +25,7 @@ public class User {
 
     @Column(nullable = false)
     private String role = "RESIDENT";
-
+    
+    @OneToOne(mappedBy = "owner")
+    private ApartmentUnit apartmentUnit;
 }
