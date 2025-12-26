@@ -3,21 +3,15 @@ package com.example.demo.servlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.ServletException;
+
 import java.io.IOException;
 
 public class SimpleHelloServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    public void doGet(HttpServletRequest request,
+                      HttpServletResponse response) throws IOException {
 
-        resp.setContentType("text/plain");
-        resp.getWriter().write("Hello World");
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "HelloServlet";
+        response.getWriter().write("Hello World");
     }
 }
