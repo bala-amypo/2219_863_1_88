@@ -1,7 +1,10 @@
 package com.example.demo.model;
 
+import com.example.demo.exception.BadRequestException;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
@@ -13,23 +16,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String email;
 
+    private String name;
     private String password;
+    private String role = "RESIDENT";
 
-    private String role;
-
-    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL)
-    private ApartmentUnit apartmentUnit;
-
-    public User(Long id, String name, String email, String password, String role) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
+    @PrePersist
+    public void prePersist() {
+        if (email == null || email.isEmpty()) {
+            throw new BadRequestException("Email cannot be empty");
+        }
     }
 }
