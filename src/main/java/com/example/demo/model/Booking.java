@@ -1,8 +1,14 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Booking {
 
     @Id
@@ -11,17 +17,4 @@ public class Booking {
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
-
-    // getters and setters
-    public Long getId() {
-        return id;
-    }
-
-    public BookingStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(BookingStatus status) {
-        this.status = status;
-    }
 }
