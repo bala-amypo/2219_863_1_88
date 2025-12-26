@@ -26,15 +26,17 @@ public class BookingLog {
     @Column(nullable = false)
     private LocalDateTime loggedAt;
 
-    public BookingLog(Long id, Booking booking, String logMessage) {
+    public BookingLog(Long id, Booking booking, String logMessage, LocalDateTime loggedAt) {
         this.id = id;
         this.booking = booking;
         this.logMessage = logMessage;
-        this.loggedAt = LocalDateTime.now();
+        this.loggedAt = loggedAt;
     }
 
     @PrePersist
     public void onCreate() {
-        this.loggedAt = LocalDateTime.now();
+        if (this.loggedAt == null) {
+            this.loggedAt = LocalDateTime.now();
+        }
     }
 }
