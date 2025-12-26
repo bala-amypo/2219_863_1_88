@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.Booking;
-import com.example.demo.model.BookingStatus;
 import com.example.demo.repository.BookingRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,7 @@ public class BookingServiceImpl {
     }
 
     public Booking confirmBooking(Booking booking) {
-        booking.setStatus(BookingStatus.CONFIRMED);
+        booking.setStatus(Booking.STATUS_CONFIRMED);
         return bookingRepository.save(booking);
     }
 }

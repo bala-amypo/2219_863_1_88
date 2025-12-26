@@ -11,10 +11,14 @@ import lombok.*;
 @Builder
 public class Booking {
 
+    public static final String STATUS_PENDING = "PENDING";
+    public static final String STATUS_CONFIRMED = "CONFIRMED";
+    public static final String STATUS_CANCELLED = "CANCELLED";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private BookingStatus status;
+    @Column(nullable = false)
+    private String status;
 }
