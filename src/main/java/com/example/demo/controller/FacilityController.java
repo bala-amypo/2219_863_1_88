@@ -7,22 +7,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/facilities")
+@RequestMapping("/api/facilities")
 public class FacilityController {
 
-    private final FacilityService service;
+    private final FacilityService facilityService;
 
-    public FacilityController(FacilityService service) {
-        this.service = service;
+    public FacilityController(FacilityService facilityService) {
+        this.facilityService = facilityService;
     }
 
     @PostMapping
-    public Facility add(@RequestBody Facility facility) {
-        return service.addFacility(facility);
+    public Facility addFacility(@RequestBody Facility facility) {
+        return facilityService.addFacility(facility);
     }
 
     @GetMapping
-    public List<Facility> list() {
-        return service.getAllFacilities();
+    public List<Facility> getAllFacilities() {
+        return facilityService.getAllFacilities();
     }
 }
