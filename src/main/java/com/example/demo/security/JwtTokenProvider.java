@@ -2,6 +2,7 @@ package com.example.demo.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -11,17 +12,26 @@ import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
-    
+
     private final SecretKey key;
     private final long jwtExpiration;
 
-    public JwtTokenProvider(String jwtSecret, long jwtExpiration) {
+    // ✅ Spring-friendly constructor
+    public JwtTokenProvider(
+            @Value("${jwt.secret}") String jwtSecret,
+            @Value("${jwt.expiration}") long jwtExpiration) {
+
         this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
         this.jwtExpiration = jwtExpiration;
     }
 
-    public String generateToken(Authentication authentication, Long userId, String email, String role) {
+    public String generateToken(Authentication authentication,
+                                Long userId,
+                                String email,
+                                String role) {
+
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
+
         Date expiryDate = new Date(System.currentTimeMillis() + jwtExpiration);
 
         return Jwts.builder()
@@ -40,7 +50,7 @@ public class JwtTokenProvider {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        
+
         return Long.valueOf(claims.getSubject());
     }
 
@@ -50,7 +60,7 @@ public class JwtTokenProvider {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        
+
         return claims.get("email", String.class);
     }
 
@@ -60,13 +70,16 @@ public class JwtTokenProvider {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        
+
         return claims.get("role", String.class);
     }
 
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(authToken);
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(authToken);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             return false;
