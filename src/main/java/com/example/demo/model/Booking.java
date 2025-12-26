@@ -1,24 +1,42 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Table(name = "bookings")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Booking {
-
-    public static final String STATUS_PENDING = "PENDING";
     public static final String STATUS_CONFIRMED = "CONFIRMED";
     public static final String STATUS_CANCELLED = "CANCELLED";
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "facility_id", nullable = false)
+    private Facility facility;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+    
     @Column(nullable = false)
-    private String status;
+    private LocalDateTime startTime;
+    
+    @Column(nullable = false)
+    private LocalDateTime endTime;
+    
+    @Column(nullable = false)
+    private String status = STATUS_CONFIRMED;
+    
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    private List<BookingLog> bookingLogs;
 }
