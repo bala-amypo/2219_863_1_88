@@ -1,18 +1,15 @@
 package com.example.demo.model;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import jakarta.persistence.*;
 
 @Entity
 @Table(name = "apartment_units")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-
 public class ApartmentUnit {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,4 +23,10 @@ public class ApartmentUnit {
     @OneToOne
     @JoinColumn(name = "owner_id")
     private User owner;
+
+    public ApartmentUnit(Long id, String unitNumber, Integer floor) {
+        this.id = id;
+        this.unitNumber = unitNumber;
+        this.floor = floor;
+    }
 }

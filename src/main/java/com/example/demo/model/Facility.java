@@ -1,18 +1,15 @@
 package com.example.demo.model;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import jakarta.persistence.*;
 
 @Entity
 @Table(name = "facilities")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-
 public class Facility {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,4 +25,12 @@ public class Facility {
 
     @Column(nullable = false)
     private String closeTime;
+
+    public Facility(Long id, String name, String description, String openTime, String closeTime) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
+    }
 }

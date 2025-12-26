@@ -1,19 +1,17 @@
 package com.example.demo.model;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bookings")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-
 public class Booking {
+
     public static final String STATUS_CONFIRMED = "CONFIRMED";
     public static final String STATUS_CANCELLED = "CANCELLED";
 
@@ -36,5 +34,16 @@ public class Booking {
     private LocalDateTime endTime;
 
     @Column(nullable = false)
-    private String status = STATUS_CONFIRMED;
+    private String status;
+
+    public Booking(Long id, Facility facility, User user,
+                   LocalDateTime startTime, LocalDateTime endTime, String status) {
+
+        this.id = id;
+        this.facility = facility;
+        this.user = user;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.status = status;
+    }
 }
