@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ConflictException;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Booking;
 import com.example.demo.model.Facility;
 import com.example.demo.model.User;
@@ -10,7 +9,9 @@ import com.example.demo.repository.FacilityRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BookingLogService;
 import com.example.demo.service.BookingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -20,7 +21,8 @@ public class BookingServiceImpl implements BookingService {
     private final FacilityRepository facilityRepository;
     private final UserRepository userRepository;
     private final BookingLogService bookingLogService;
-    
+
+    @Autowired
     public BookingServiceImpl(BookingRepository bookingRepository, FacilityRepository facilityRepository, 
                              UserRepository userRepository, BookingLogService bookingLogService) {
         this.bookingRepository = bookingRepository;
@@ -28,24 +30,17 @@ public class BookingServiceImpl implements BookingService {
         this.userRepository = userRepository;
         this.bookingLogService = bookingLogService;
     }
-    
+
     @Override
     public Booking createBooking(Long facilityId, Long userId, Booking booking) {
-        Facility facility = facilityRepository.findById(facilityId)
-            .orElseThrow(() -> new ResourceNotFoundException("Facility not found"));
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        Facility facility = facilityRepository.findById(facilityId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow();
         
-        if (booking.getEndTime().isBefore(booking.getStartTime()) || 
-            booking.getEndTime().equals(booking.getStartTime())) {
-            throw new IllegalArgumentException("End time must be after start time");
-        }
+        List<Booking> conflicts = bookingRepository.findByFacilityAndStartTimeLessThanAndEndTimeGreaterThan(
+                facility, booking.getEndTime(), booking.getStartTime());
         
-        List<Booking> overlapping = bookingRepository.findByFacilityAndStartTimeLessThanAndEndTimeGreaterThan(
-            facility, booking.getEndTime(), booking.getStartTime());
-        
-        if (!overlapping.isEmpty()) {
-            throw new ConflictException("Facility booking conflict detected");
+        if (!conflicts.isEmpty()) {
+            throw new ConflictException("Booking conflicts with existing booking");
         }
         
         booking.setFacility(facility);
@@ -57,22 +52,20 @@ public class BookingServiceImpl implements BookingService {
         
         return saved;
     }
-    
+
     @Override
     public Booking cancelBooking(Long bookingId) {
-        Booking booking = bookingRepository.findById(bookingId)
-            .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
-        
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow();
         booking.setStatus(Booking.STATUS_CANCELLED);
+        
         Booking saved = bookingRepository.save(booking);
-        bookingLogService.addLog(bookingId, "Booking cancelled");
+        bookingLogService.addLog(saved.getId(), "Booking cancelled");
         
         return saved;
     }
-    
+
     @Override
     public Booking getBooking(Long bookingId) {
-        return bookingRepository.findById(bookingId)
-            .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+        return bookingRepository.findById(bookingId).orElseThrow();
     }
 }
