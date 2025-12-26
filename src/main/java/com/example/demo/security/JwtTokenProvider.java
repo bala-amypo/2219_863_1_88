@@ -4,68 +4,70 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
-
-    private final Key key;
-    private final long expirationMs;
-
-    public JwtTokenProvider(String secretKey, long expirationMs) {
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
-        this.expirationMs = expirationMs;
+    
+    private final SecretKey key;
+    private final long validityInMs;
+    
+    public JwtTokenProvider(String secret, long validityInMs) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        this.validityInMs = validityInMs;
     }
-
-    public String generateToken(Authentication authentication, Long userId, String email, String role) {
+    
+    public JwtTokenProvider() {
+        this("mySecretKey123456789012345678901234567890", 86400000L); // 24 hours
+    }
+    
+    public String generateToken(Authentication auth, Long userId, String email, String role) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + expirationMs);
-
+        Date validity = new Date(now.getTime() + validityInMs);
+        
         return Jwts.builder()
-                .setSubject(userId != null ? userId.toString() : "0")
-                .claim("email", email)
-                .claim("role", role)
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+            .setSubject(email)
+            .claim("userId", userId)
+            .claim("email", email)
+            .claim("role", role)
+            .setIssuedAt(now)
+            .setExpiration(validity)
+            .signWith(key)
+            .compact();
     }
-
-    public Long getUserIdFromToken(String token) {
-        try {
-            Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
-            return Long.valueOf(claims.getSubject());
-        } catch (Exception e) {
-            return 0L;
-        }
-    }
-
-    public String getEmailFromToken(String token) {
-        try {
-            Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
-            return claims.get("email", String.class);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public String getRoleFromToken(String token) {
-        try {
-            Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
-            return claims.get("role", String.class);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
+    
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        } catch (JwtException | IllegalArgumentException ex) {
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
+        }
+    }
+    
+    public String getEmailFromToken(String token) {
+        Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        return claims.get("email", String.class);
+    }
+    
+    public String getRoleFromToken(String token) {
+        Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        return claims.get("role", String.class);
+    }
+    
+    public Long getUserIdFromToken(String token) {
+        Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        Object userId = claims.get("userId");
+        if (userId != null) {
+            return Long.valueOf(userId.toString());
+        }
+        // Fallback to subject
+        String subject = claims.getSubject();
+        try {
+            return Long.valueOf(subject);
+        } catch (NumberFormatException e) {
+            return null;
         }
     }
 }
