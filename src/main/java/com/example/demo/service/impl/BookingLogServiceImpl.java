@@ -6,7 +6,6 @@ import com.example.demo.model.BookingLog;
 import com.example.demo.repository.BookingLogRepository;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.service.BookingLogService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +16,6 @@ public class BookingLogServiceImpl implements BookingLogService {
     private final BookingLogRepository bookingLogRepository;
     private final BookingRepository bookingRepository;
 
-    @Autowired
     public BookingLogServiceImpl(BookingLogRepository bookingLogRepository,
                                  BookingRepository bookingRepository) {
         this.bookingLogRepository = bookingLogRepository;

@@ -1,9 +1,14 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.ApartmentUnit;
+import com.example.demo.model.User;
+import com.example.demo.repository.ApartmentUnitRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.ApartmentUnitService;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ApartmentUnitServiceImpl implements ApartmentUnitService {
@@ -18,32 +23,19 @@ public class ApartmentUnitServiceImpl implements ApartmentUnitService {
     }
 
     @Override
-    public ApartmentUnit assignUnit(Long userId, ApartmentUnit unit) {
-        return assignUnitToUser(userId, unit);
-    }
-
-    @Override
-    public ApartmentUnit getByUser(Long userId) {
-        return getUnitByUser(userId);
-    }
-
-    @Override
     public ApartmentUnit assignUnitToUser(Long userId, ApartmentUnit unit) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         unit.setOwner(user);
-        ApartmentUnit saved = apartmentUnitRepository.save(unit);
-        user.setApartmentUnit(saved);
-        return saved;
+        return apartmentUnitRepository.save(unit);
     }
 
     @Override
     public ApartmentUnit getUnitByUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return apartmentUnitRepository.findByOwner(user)
-                .orElseThrow(() -> new RuntimeException("Unit not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Unit not found"));
     }
 }
