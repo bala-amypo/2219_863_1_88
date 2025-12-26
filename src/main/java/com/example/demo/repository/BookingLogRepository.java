@@ -4,6 +4,7 @@ import com.example.demo.model.Booking;
 import com.example.demo.model.BookingLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 @Repository
