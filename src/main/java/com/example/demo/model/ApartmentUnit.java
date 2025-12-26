@@ -1,13 +1,13 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "apartment_units")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor   
 public class ApartmentUnit {
 
     @Id
@@ -23,10 +23,4 @@ public class ApartmentUnit {
     @OneToOne
     @JoinColumn(name = "owner_id")
     private User owner;
-
-    public ApartmentUnit(Long id, String unitNumber, Integer floor) {
-        this.id = id;
-        this.unitNumber = unitNumber;
-        this.floor = floor;
-    }
 }
