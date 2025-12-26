@@ -25,7 +25,6 @@ public class User {
     @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL)
     private ApartmentUnit apartmentUnit;
 
-    // 🔥 REQUIRED for AuthController & tests
     public User(Long id, String name, String email, String password, String role) {
         this.id = id;
         this.name = name;
