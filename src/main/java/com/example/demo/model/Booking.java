@@ -10,8 +10,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "bookings")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+
 public class Booking {
     public static final String STATUS_CONFIRMED = "CONFIRMED";
     public static final String STATUS_CANCELLED = "CANCELLED";

@@ -9,8 +9,9 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "facilities")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+
 public class Facility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
