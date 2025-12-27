@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+/*package com.example.demo.controller;
 
 import com.example.demo.model.ApartmentUnit;
 import com.example.demo.service.ApartmentUnitService;
@@ -27,5 +27,8 @@ public class ApartmentUnitController {
     public ResponseEntity<ApartmentUnit> getUnitByUser(@PathVariable Long userId) {
         ApartmentUnit unit = apartmentUnitService.getUnitByUser(userId);
         return ResponseEntity.ok(unit);
-    }
-}
+   // }
+} */
+
+hii
+
