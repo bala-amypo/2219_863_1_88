@@ -20,28 +20,21 @@ public class Booking {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "facility_id", nullable = false)
+    @JoinColumn(name = "facility_id")
     private Facility facility;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
+    @Column
     private LocalDateTime startTime;
 
-    @Column(nullable = false)
+    @Column
     private LocalDateTime endTime;
 
-    @Column(nullable = false)
-    private String status;
-
-    @PrePersist
-    public void setDefaults() {
-        if (this.status == null) {
-            this.status = "PENDING";
-        }
-    }
+    @Column
+    private String status = STATUS_CONFIRMED; // ✅ DEFAULT FIX
 
     public Booking(Long id, Facility facility, User user,
                    LocalDateTime startTime, LocalDateTime endTime, String status) {
@@ -51,6 +44,6 @@ public class Booking {
         this.user = user;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.status = status;
+        this.status = (status == null) ? STATUS_CONFIRMED : status;
     }
 }
