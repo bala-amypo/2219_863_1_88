@@ -33,9 +33,10 @@ public class Booking {
     @Column
     private LocalDateTime endTime;
 
-    @Column
-    private String status = STATUS_CONFIRMED; 
-    
+    @Column(nullable = false)
+private String status = STATUS_CONFIRMED;
+ 
+
     public Booking(Long id, Facility facility, User user,
                    LocalDateTime startTime, LocalDateTime endTime, String status) {
         this.id = id;
