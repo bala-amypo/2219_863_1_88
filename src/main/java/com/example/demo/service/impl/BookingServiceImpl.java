@@ -34,8 +34,8 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Booking createBooking(Long facilityId, Long userId, Booking booking) {
 
-        Facility facility = facilityRepository.findById(facilityId).orElseThrow();
-        User user = userRepository.findById(userId).orElseThrow();
+        Facility facility = facilityRepository.findById(facilityId).orElseThrow(() -> new ConflictException("Booking conflict error"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ConflictException("Booking conflict error"));
 
  
         booking.setFacility(facility);
