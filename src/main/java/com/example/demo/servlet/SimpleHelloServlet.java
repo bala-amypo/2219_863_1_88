@@ -13,10 +13,8 @@ public class SimpleHelloServlet extends HttpServlet {
                       HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.reset(); 
         response.setContentType("text/plain");
-        response.getWriter().write("Hello World");
-        response.getWriter().flush(); 
+        response.getWriter().print("Hello World");
     }
 
     @Override
