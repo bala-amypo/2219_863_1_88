@@ -32,7 +32,7 @@ public class ApartmentUnitController {
 
 package com.example.demo.controller;
 
-import com.example.demo.model.ApartmentUnitModel;
+import com.example.demo.model.ApartmentUnit;
 import com.example.demo.service.ApartmentUnitService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -48,14 +48,14 @@ public class ApartmentUnitController {
     }
 
     @PostMapping("/assign/{userId}")
-    public ResponseEntity<ApartmentUnitModel> assign(
+    public ResponseEntity<ApartmentUnit> assign(
             @PathVariable Long userId,
-            @RequestBody ApartmentUnitModel unit) {
+            @RequestBody ApartmentUnit unit) {
         return ResponseEntity.ok(unitService.assignUnitToUser(userId, unit));
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<ApartmentUnitModel> getByUser(@PathVariable Long userId) {
+    public ResponseEntity<ApartmentUnit> getByUser(@PathVariable Long userId) {
         return ResponseEntity.ok(unitService.getUnitByUser(userId));
     }
 }
