@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.servlet.SimpleHelloServlet;
+import com.example.demo.servlet.HelloServlet;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,7 @@ public class ServletConfig {
     public ServletRegistrationBean<HelloServlet> helloServletRegistration() {
         ServletRegistrationBean<HelloServlet> registration = 
             new ServletRegistrationBean<>(new HelloServlet(), "/hello-servlet");
-        registration.setName("SimpleHelloServlet");
+        registration.setName("HelloServlet");
         return registration;
     }
 }
