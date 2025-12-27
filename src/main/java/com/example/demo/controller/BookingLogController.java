@@ -27,7 +27,7 @@ public class BookingLogController {
 
 package com.example.demo.controller;
 
-import com.example.demo.model.BookingLogModel;
+import com.example.demo.model.BookingLog;
 import com.example.demo.service.BookingLogService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +45,7 @@ public class BookingLogController {
     }
 
     @GetMapping("/booking/{bookingId}")
-    public ResponseEntity<List<BookingLogModel>> logs(@PathVariable Long bookingId) {
+    public ResponseEntity<List<BookingLog>> logs(@PathVariable Long bookingId) {
         return ResponseEntity.ok(logService.getLogsByBooking(bookingId));
     }
 }

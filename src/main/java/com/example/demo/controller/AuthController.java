@@ -87,8 +87,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserModel> register(@RequestBody RegisterRequest request) {
-        UserModel user = new UserModel();
+    public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
+        User user = new UserModel();
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
