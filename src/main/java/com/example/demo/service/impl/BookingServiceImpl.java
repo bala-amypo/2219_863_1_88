@@ -1,10 +1,15 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ConflictException;
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
+import com.example.demo.model.Booking;
+import com.example.demo.model.Facility;
+import com.example.demo.model.User;
+import com.example.demo.repository.BookingRepository;
+import com.example.demo.repository.FacilityRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BookingLogService;
 import com.example.demo.service.BookingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +22,7 @@ public class BookingServiceImpl implements BookingService {
     private final UserRepository userRepository;
     private final BookingLogService bookingLogService;
 
+    @Autowired
     public BookingServiceImpl(BookingRepository bookingRepository,
                               FacilityRepository facilityRepository,
                               UserRepository userRepository,
@@ -33,18 +39,27 @@ public class BookingServiceImpl implements BookingService {
         Facility facility = facilityRepository.findById(facilityId).orElseThrow();
         User user = userRepository.findById(userId).orElseThrow();
 
-        List<Booking> conflicts =
-                bookingRepository.findByFacilityAndStartTimeLessThanAndEndTimeGreaterThan(
-                        facility, booking.getEndTime(), booking.getStartTime());
-
-        if (!conflicts.isEmpty()) {
-            throw new ConflictException("Booking conflict");
-        }
-
         booking.setFacility(facility);
         booking.setUser(user);
 
+        if (booking.getStatus() == null) {
+            booking.setStatus(Booking.STATUS_CONFIRMED);
+        }
+
+        List<Booking> conflicts =
+                bookingRepository.findByFacilityAndStartTimeLessThanAndEndTimeGreaterThan(
+                        facility,
+                        booking.getEndTime(),
+                        booking.getStartTime()
+                );
+
+        if (!conflicts.isEmpty()) {
+            throw new ConflictException("Booking conflicts with existing booking");
+        }
+
         Booking saved = bookingRepository.save(booking);
+
+        // ✅ CRITICAL FIX: log only after save, no extra lookups
         bookingLogService.addLog(saved.getId(), "Booking created");
 
         return saved;
@@ -53,9 +68,12 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Booking cancelBooking(Long bookingId) {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow();
-        booking.setStatus("CANCELLED");
-        bookingLogService.addLog(bookingId, "Booking cancelled");
-        return bookingRepository.save(booking);
+        booking.setStatus(Booking.STATUS_CANCELLED);
+
+        Booking saved = bookingRepository.save(booking);
+        bookingLogService.addLog(saved.getId(), "Booking cancelled");
+
+        return saved;
     }
 
     @Override
