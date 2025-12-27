@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.BookingLogModel;
-import com.example.demo.model.BookingModel;
+import com.example.demo.model.BookingLog;
+import com.example.demo.model.Booking;
 import com.example.demo.repository.BookingLogRepository;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.service.BookingLogService;

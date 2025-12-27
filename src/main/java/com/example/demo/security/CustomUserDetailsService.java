@@ -1,6 +1,6 @@
 package com.example.demo.security;
 
-import com.example.demo.model.UserModel;
+import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
@@ -22,7 +22,7 @@ public class CustomUserDetailsService
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
 
-        UserModel user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found"));
 
