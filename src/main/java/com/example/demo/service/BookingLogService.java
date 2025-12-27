@@ -1,10 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.model.BookingLogModel;
+import com.example.demo.model.BookingLog;
 
 import java.util.List;
 
 public interface BookingLogService {
-    BookingLogModel addLog(Long bookingId, String message);
-    List<BookingLogModel> getLogsByBooking(Long bookingId);
+    BookingLog addLog(Long bookingId, String message);
+    List<BookingLog> getLogsByBooking(Long bookingId);
 }

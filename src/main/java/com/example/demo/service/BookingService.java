@@ -1,9 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.model.BookingModel;
+import com.example.demo.model.Booking;
 
 public interface BookingService {
-    BookingModel createBooking(Long facilityId, Long userId, BookingModel booking);
-    BookingModel cancelBooking(Long bookingId);
-    BookingModel getBooking(Long bookingId);
+    Booking createBooking(Long facilityId, Long userId, Booking booking);
+    Booking cancelBooking(Long bookingId);
+    Booking getBooking(Long bookingId);
 }

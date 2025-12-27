@@ -1,10 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.model.FacilityModel;
+import com.example.demo.model.Facility;
 
 import java.util.List;
 
 public interface FacilityService {
-    FacilityModel addFacility(FacilityModel facility);
-    List<FacilityModel> getAllFacilities();
+    Facility addFacility(Facility facility);
+    List<Facility> getAllFacilities();
 }
