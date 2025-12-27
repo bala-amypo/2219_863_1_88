@@ -1,13 +1,11 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.Booking;
-import com.example.demo.model.BookingLog;
+import com.example.demo.model.BookingLogModel;
+import com.example.demo.model.BookingModel;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface BookingLogRepository extends JpaRepository<BookingLog, Long> {
-    List<BookingLog> findByBookingOrderByLoggedAtAsc(Booking booking);
+public interface BookingLogRepository extends JpaRepository<BookingLogModel, Long> {
+    List<BookingLogModel> findByBookingOrderByLoggedAtAsc(BookingModel booking);
 }
