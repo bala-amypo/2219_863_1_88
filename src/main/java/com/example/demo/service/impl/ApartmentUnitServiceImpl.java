@@ -1,4 +1,4 @@
-package com.example.demo.service.impl;
+/*package com.example.demo.service.impl;
 
 import com.example.demo.model.ApartmentUnit;
 import com.example.demo.model.User;
@@ -32,4 +32,4 @@ public class ApartmentUnitServiceImpl implements ApartmentUnitService {
         User user = userRepository.findById(userId).orElseThrow();
         return apartmentUnitRepository.findByOwner(user).orElse(null);
     }
-}
+} */
