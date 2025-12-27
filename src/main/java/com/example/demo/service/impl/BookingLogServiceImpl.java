@@ -23,12 +23,12 @@ public class BookingLogServiceImpl implements BookingLogService {
     }
 
     @Override
-    public BookingLogModel addLog(Long bookingId, String message) {
+    public BookingLog addLog(Long bookingId, String message) {
 
-        BookingModel booking = bookingRepository.findById(bookingId)
+        Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
 
-        BookingLogModel log = new BookingLogModel();
+        BookingLog log = new BookingLog();
         log.setBooking(booking);
         log.setLogMessage(message);
         log.setLoggedAt(LocalDateTime.now());
@@ -37,7 +37,7 @@ public class BookingLogServiceImpl implements BookingLogService {
     }
 
     @Override
-    public List<BookingLogModel> getLogsByBooking(Long bookingId) {
+    public List<BookingLog> getLogsByBooking(Long bookingId) {
 
         BookingModel booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));

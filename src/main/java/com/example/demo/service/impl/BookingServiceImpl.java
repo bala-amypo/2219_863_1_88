@@ -28,12 +28,12 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingModel createBooking(Long facilityId, Long userId, BookingModel booking) {
+    public Booking createBooking(Long facilityId, Long userId, Booking booking) {
 
-        FacilityModel facility = facilityRepository.findById(facilityId).orElseThrow();
-        UserModel user = userRepository.findById(userId).orElseThrow();
+        Facility facility = facilityRepository.findById(facilityId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow();
 
-        List<BookingModel> conflicts =
+        List<Booking> conflicts =
                 bookingRepository.findByFacilityAndStartTimeLessThanAndEndTimeGreaterThan(
                         facility, booking.getEndTime(), booking.getStartTime());
 
@@ -44,22 +44,22 @@ public class BookingServiceImpl implements BookingService {
         booking.setFacility(facility);
         booking.setUser(user);
 
-        BookingModel saved = bookingRepository.save(booking);
+        Booking saved = bookingRepository.save(booking);
         bookingLogService.addLog(saved.getId(), "Booking created");
 
         return saved;
     }
 
     @Override
-    public BookingModel cancelBooking(Long bookingId) {
-        BookingModel booking = bookingRepository.findById(bookingId).orElseThrow();
+    public Booking cancelBooking(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow();
         booking.setStatus("CANCELLED");
         bookingLogService.addLog(bookingId, "Booking cancelled");
         return bookingRepository.save(booking);
     }
 
     @Override
-    public BookingModel getBooking(Long bookingId) {
+    public Booking getBooking(Long bookingId) {
         return bookingRepository.findById(bookingId).orElseThrow();
     }
 }
