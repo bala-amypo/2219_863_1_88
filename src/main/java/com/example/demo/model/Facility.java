@@ -1,9 +1,13 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "facilities")
+@Data
+@NoArgsConstructor
 public class Facility {
 
     @Id
@@ -15,46 +19,12 @@ public class Facility {
     private String openTime;
     private String closeTime;
 
-    public Facility() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getOpenTime() {
-        return openTime;
-    }
-
-    public String getCloseTime() {
-        return closeTime;
-    }
-
-    public void setId(Long id) {
+    public Facility(Long id, String name, String description,
+                    String openTime, String closeTime) {
         this.id = id;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setOpenTime(String openTime) {
         this.openTime = openTime;
-    }
-
-    public void setCloseTime(String closeTime) {
         this.closeTime = closeTime;
     }
 }
