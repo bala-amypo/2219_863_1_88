@@ -33,34 +33,30 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking createBooking(Long facilityId, Long userId, Booking booking) {
+        Facility facility = facilityRepository.findById(facilityId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow();
 
-        Facility facility = facilityRepository.findById(facilityId).orElseThrow(() -> new ConflictException("Booking conflict error"));
-        User user = userRepository.findById(userId).orElseThrow(() -> new ConflictException("Booking conflict error"));
-
- 
-        booking.setFacility(facility);
+        booking.setFacility(facility);  
         booking.setUser(user);
-
 
         if (booking.getStatus() == null) {
             booking.setStatus(Booking.STATUS_CONFIRMED);
         }
 
-  
         List<Booking> conflicts = bookingRepository.findByFacilityAndStartTimeLessThanAndEndTimeGreaterThan(
-                booking.getFacility(), booking.getStartTime(), booking.getEndTime());
+                facility, booking.getStartTime(), booking.getEndTime());
 
         if (!conflicts.isEmpty()) {
             throw new ConflictException("Booking conflicts with existing booking");
         }
 
- 
         Booking saved = bookingRepository.save(booking);
-
         bookingLogService.addLog(saved.getId(), "Booking created");
 
         return saved;
     }
+
+   
 
     @Override
     public Booking cancelBooking(Long bookingId) {
