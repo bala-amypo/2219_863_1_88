@@ -34,16 +34,22 @@ public class Booking {
     private LocalDateTime endTime;
 
     @Column
-    private String status = STATUS_CONFIRMED; // ✅ DEFAULT FIX
-
+    private String status = STATUS_CONFIRMED; 
+    
     public Booking(Long id, Facility facility, User user,
                    LocalDateTime startTime, LocalDateTime endTime, String status) {
-
         this.id = id;
         this.facility = facility;
         this.user = user;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.status = (status == null) ? STATUS_CONFIRMED : status;
+        this.status = (status == null) ? STATUS_CONFIRMED : status; // ensure default
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (this.status == null) {
+            this.status = STATUS_CONFIRMED;
+        }
     }
 }
