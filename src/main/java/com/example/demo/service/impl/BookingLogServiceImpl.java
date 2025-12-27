@@ -39,7 +39,7 @@ public class BookingLogServiceImpl implements BookingLogService {
     @Override
     public List<BookingLog> getLogsByBooking(Long bookingId) {
 
-        BookingModel booking = bookingRepository.findById(bookingId)
+        Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
 
         return logRepository.findByBookingOrderByLoggedAtAsc(booking);
