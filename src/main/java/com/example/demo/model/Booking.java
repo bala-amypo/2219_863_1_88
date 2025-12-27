@@ -20,25 +20,19 @@ public class Booking {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "facility_id")
     private Facility facility;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
     private LocalDateTime startTime;
-
-    @Column
     private LocalDateTime endTime;
 
-    @Column
-    private String status = STATUS_CONFIRMED; 
+    private String status = STATUS_CONFIRMED;
 
     public Booking(Long id, Facility facility, User user,
-                   LocalDateTime startTime, LocalDateTime endTime, String status) {
-
+                   LocalDateTime startTime, LocalDateTime endTime,
+                   String status) {
         this.id = id;
         this.facility = facility;
         this.user = user;

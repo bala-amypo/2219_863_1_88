@@ -1,55 +1,30 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "apartment_units")
+@Data
+@NoArgsConstructor
 public class ApartmentUnit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     private String unitNumber;
-
     private Integer floor;
 
     @OneToOne
+    @JoinColumn(name = "owner_id")
     private User owner;
 
-    public ApartmentUnit() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getUnitNumber() {
-        return unitNumber;
-    }
-
-    public Integer getFloor() {
-        return floor;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setId(Long id) {
+    public ApartmentUnit(Long id, String unitNumber, Integer floor, User owner) {
         this.id = id;
-    }
-
-    public void setUnitNumber(String unitNumber) {
         this.unitNumber = unitNumber;
-    }
-
-    public void setFloor(Integer floor) {
         this.floor = floor;
-    }
-
-    public void setOwner(User owner) {
         this.owner = owner;
     }
 }
