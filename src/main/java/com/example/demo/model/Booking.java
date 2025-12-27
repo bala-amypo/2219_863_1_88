@@ -36,6 +36,13 @@ public class Booking {
     @Column(nullable = false)
     private String status;
 
+    @PrePersist
+    public void setDefaults() {
+        if (this.status == null) {
+            this.status = "PENDING";
+        }
+    }
+
     public Booking(Long id, Facility facility, User user,
                    LocalDateTime startTime, LocalDateTime endTime, String status) {
 
