@@ -59,7 +59,6 @@ public class BookingServiceImpl implements BookingService {
 
         Booking saved = bookingRepository.save(booking);
 
-        // ✅ CRITICAL FIX: log only after save, no extra lookups
         bookingLogService.addLog(saved.getId(), "Booking created");
 
         return saved;
