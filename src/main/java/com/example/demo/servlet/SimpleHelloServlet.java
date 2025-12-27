@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.ServletException;
 import java.io.IOException;
 
-public class HelloServlet extends HttpServlet {
+public class SimpleHelloServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request,
@@ -19,6 +19,6 @@ public class HelloServlet extends HttpServlet {
 
     @Override
     public String getServletInfo() {
-        return "HelloServlet";
+        return "SimpleHelloServlet";
     }
 }
