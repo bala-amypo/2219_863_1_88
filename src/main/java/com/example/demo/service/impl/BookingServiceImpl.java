@@ -59,7 +59,6 @@ public class BookingServiceImpl implements BookingService {
 
         Booking saved = bookingRepository.save(booking);
 
-        // ✅ DIRECT save (NO findById call)
         BookingLog log = new BookingLog(
                 null,
                 saved,
