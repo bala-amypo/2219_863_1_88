@@ -30,7 +30,6 @@ public class BookingServiceImpl implements BookingService {
                               FacilityRepository facilityRepository,
                               UserRepository userRepository,
                               BookingLogRepository bookingLogRepository) {
-
         this.bookingRepository = bookingRepository;
         this.facilityRepository = facilityRepository;
         this.userRepository = userRepository;
@@ -73,7 +72,6 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking cancelBooking(Long bookingId) {
-
         Booking booking = bookingRepository.findById(bookingId).orElseThrow();
         booking.setStatus(Booking.STATUS_CANCELLED);
 
@@ -85,7 +83,7 @@ public class BookingServiceImpl implements BookingService {
                 "Booking cancelled",
                 LocalDateTime.now()
         );
-        BookingLogRepository.save(log);
+        bookingLogRepository.save(log);
 
         return saved;
     }
