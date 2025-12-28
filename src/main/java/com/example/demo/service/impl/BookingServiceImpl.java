@@ -85,7 +85,7 @@ public class BookingServiceImpl implements BookingService {
                 "Booking cancelled",
                 LocalDateTime.now()
         );
-        bookingLogRepository.save(log);
+        BookingLogRepository.save(log);
 
         return saved;
     }
