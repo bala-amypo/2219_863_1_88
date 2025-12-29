@@ -1,3 +1,5 @@
+package com.example.demo.controller;
+
 import com.example.demo.model.BookingLog;
 import com.example.demo.service.BookingLogService;
 import io.swagger.v3.oas.annotations.tags.Tag;

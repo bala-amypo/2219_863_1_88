@@ -1,3 +1,5 @@
+package com.example.demo.controller;
+
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.LoginResponse;
 import com.example.demo.dto.RegisterRequest;

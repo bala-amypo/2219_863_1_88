@@ -1,3 +1,5 @@
+package com.example.demo.controller;
+
 import com.example.demo.model.ApartmentUnit;
 import com.example.demo.service.ApartmentUnitService;
 import io.swagger.v3.oas.annotations.tags.Tag;
