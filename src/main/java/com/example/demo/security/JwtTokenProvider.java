@@ -2,6 +2,7 @@ package com.example.demo.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -11,11 +12,14 @@ import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
-    
+
     private final SecretKey key;
     private final long jwtExpiration;
 
-    public JwtTokenProvider(String jwtSecret, long jwtExpiration) {
+    public JwtTokenProvider(
+            @Value("${jwt.secret}") String jwtSecret,
+            @Value("${jwt.expiration}") long jwtExpiration) {
+
         this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
         this.jwtExpiration = jwtExpiration;
     }
@@ -40,28 +44,26 @@ public class JwtTokenProvider {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        
+
         return Long.valueOf(claims.getSubject());
     }
 
     public String getEmailFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()
+        return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
-                .getBody();
-        
-        return claims.get("email", String.class);
+                .getBody()
+                .get("email", String.class);
     }
 
     public String getRoleFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()
+        return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
-                .getBody();
-        
-        return claims.get("role", String.class);
+                .getBody()
+                .get("role", String.class);
     }
 
     public boolean validateToken(String authToken) {
