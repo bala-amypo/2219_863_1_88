@@ -2,6 +2,7 @@ package com.example.demo.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -11,11 +12,19 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private final SecretKey key;
-    private final long expiration = 86400000L; // 1 day
+    private final long jwtExpiration;
 
     public JwtTokenProvider() {
-        String secret = "mySuperSecretKeymySuperSecretKeymySuperSecretKey123";
+        String secret =
+                "mySuperSecretKeymySuperSecretKeymySuperSecretKey123";
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        this.jwtExpiration = 86400000L; // 1 day
+    }
+
+   
+    public JwtTokenProvider(String secret, long jwtExpiration) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        this.jwtExpiration = jwtExpiration;
     }
 
     public String generateToken(Long userId, String email, String role) {
@@ -25,10 +34,19 @@ public class JwtTokenProvider {
                 .claim("email", email)
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
+
+    public String generateToken(Authentication authentication,
+                                Long userId,
+                                String email,
+                                String role) {
+
+        return generateToken(userId, email, role);
+    }
+
 
     public boolean validateToken(String token) {
         try {
@@ -37,9 +55,13 @@ public class JwtTokenProvider {
                     .build()
                     .parseClaimsJws(token);
             return true;
-        } catch (JwtException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    public Long getUserIdFromToken(String token) {
+        return Long.valueOf(getClaims(token).getSubject());
     }
 
     public String getEmailFromToken(String token) {
