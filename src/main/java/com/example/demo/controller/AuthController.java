@@ -9,13 +9,12 @@ import com.example.demo.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@Tag(name = "Auth", description = "Authentication endpoints")
+@Tag(name = "Auth")
 public class AuthController {
 
     private final UserService userService;
@@ -32,38 +31,35 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
+
         User user = new User();
         user.setName(request.getName());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole("USER");
 
-        User registered = userService.register(user);
-        return ResponseEntity.ok(registered);
+        return ResponseEntity.ok(userService.register(user));
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
 
         User user = userService.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return ResponseEntity.badRequest().build();
         }
 
-        Authentication auth =
-                new UsernamePasswordAuthenticationToken(user.getEmail(), null);
-
         String token = tokenProvider.generateToken(
-                auth,
+                new UsernamePasswordAuthenticationToken(user.getEmail(), null),
                 user.getId(),
                 user.getEmail(),
                 user.getRole()
         );
 
-        LoginResponse response =
-                new LoginResponse(token, user.getId(), user.getEmail(), user.getRole());
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(
+                new LoginResponse(token, user.getId(), user.getEmail(), user.getRole())
+        );
     }
-} 
+}
